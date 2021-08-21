@@ -27,9 +27,6 @@ class _HomePageState extends State<HomePage> {
     final listaActividades = Provider.of<ListaProvider>(context).actividades;
     final listaProvider = Provider.of<ListaProvider>(context);  
   
-
-
-
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -58,55 +55,7 @@ class _HomePageState extends State<HomePage> {
                   backgroundColor: Colors.red[300],
                   label: "Frases aleatorias",
                   onTap: () async {
-                      await showDialog(
-                          context: context,
-                          builder: (BuildContext context){
-                              return AlertDialog(
-                                  actions: [
-                                      TextButton(
-                                          onPressed: (){
-                                              Navigator.of(context).pop(false); 
-                                          },
-                                          child: Text("Cancelar")
-                                      ),
-                                      TextButton(
-                                          onPressed: (){
-                                              if(_formkey2.currentState!.validate()){
-                                                  _formkey2.currentState!.save();
-                                                  listaProvider.getCatsFacts(limite!);
-                                                  Navigator.of(context).pop(false); 
-                                              }
-                                          },
-                                          child: Text(" Generar")
-                                      ) 
-                                  ],
-                                  content: Column( 
-                                       mainAxisSize: MainAxisSize.min,
-                                       children: [
-                                           Text(" Digite el numero de frases", style: style.estiloText1,),
-                                           SizedBox(height: 15.0,),
-                                           Form(
-                                             key: _formkey2,
-                                             child: TextFormField(
-                                                 keyboardType: TextInputType.number,
-                                                 validator: (val){
-                                                     int? lim = int.tryParse(val!);  
-                                           
-                                                     if(lim != null){
-                                                       return null; 
-                                                     }else{
-                                                       return "Ingrese un numero";
-                                                     } 
-                                                      
-                                                 },
-                                                 onSaved: (val) => limite = int.parse(val!),  
-                                             ),
-                                           ),
-                                       ],
-                                  ),
-                              );
-                          }
-                      );   
+                      await _showDialog(context, listaProvider);   
                   },
                 ),
                 SpeedDialChild(
@@ -119,6 +68,58 @@ class _HomePageState extends State<HomePage> {
             )
       ),
     );
+  }
+
+  Future<dynamic> _showDialog(BuildContext context, ListaProvider listaProvider) {
+    return showDialog(
+                        context: context,
+                        builder: (BuildContext context){
+                            return AlertDialog(
+                                actions: [
+                                    TextButton(
+                                        onPressed: (){
+                                            Navigator.of(context).pop(false); 
+                                        },
+                                        child: Text("Cancelar")
+                                    ),
+                                    TextButton(
+                                        onPressed: (){
+                                            if(_formkey2.currentState!.validate()){
+                                                _formkey2.currentState!.save();
+                                                listaProvider.getCatsFacts(limite!);
+                                                Navigator.of(context).pop(false); 
+                                            }
+                                        },
+                                        child: Text(" Generar")
+                                    ) 
+                                ],
+                                content: Column( 
+                                     mainAxisSize: MainAxisSize.min,
+                                     children: [
+                                         Text(" Digite el numero de frases", style: style.estiloText1,),
+                                         SizedBox(height: 15.0,),
+                                         Form(
+                                           key: _formkey2,
+                                           child: TextFormField(
+                                               keyboardType: TextInputType.number,
+                                               validator: (val){
+                                                   int? lim = int.tryParse(val!);  
+                                         
+                                                   if(lim != null){
+                                                     return null; 
+                                                   }else{
+                                                     return "Ingrese un numero";
+                                                   } 
+                                                    
+                                               },
+                                               onSaved: (val) => limite = int.parse(val!),  
+                                           ),
+                                         ),
+                                     ],
+                                ),
+                            );
+                        }
+                    );
   }
 
 
