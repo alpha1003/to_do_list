@@ -3,7 +3,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 import 'package:to_do_list/src/models/actividad_model.dart';
 import 'package:to_do_list/src/styles/styles.dart' as style;
-import 'package:to_do_list/src/provider/cats_provider.dart';
 import 'package:to_do_list/src/provider/list_provider.dart';
 import 'package:to_do_list/src/search/actividadSearchDelegate.dart';
 import 'package:to_do_list/src/widgets/listaActividades.dart'; 
@@ -17,8 +16,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> { 
 
    final _formkey = GlobalKey<FormState>();
+   final _formkey2 = GlobalKey<FormState>();
    String titulo = "";
    String descripcion = "";
+   int? limite; 
    
   @override
   Widget build(BuildContext context)  { 
@@ -56,8 +57,56 @@ class _HomePageState extends State<HomePage> {
                   child: Icon(Icons.play_circle_fill_rounded),
                   backgroundColor: Colors.red[300],
                   label: "Frases aleatorias",
-                  onTap: (){
-                      listaProvider.getCatsFacts(10);  
+                  onTap: () async {
+                      await showDialog(
+                          context: context,
+                          builder: (BuildContext context){
+                              return AlertDialog(
+                                  actions: [
+                                      TextButton(
+                                          onPressed: (){
+                                              Navigator.of(context).pop(false); 
+                                          },
+                                          child: Text("Cancelar")
+                                      ),
+                                      TextButton(
+                                          onPressed: (){
+                                              if(_formkey2.currentState!.validate()){
+                                                  _formkey2.currentState!.save();
+                                                  listaProvider.getCatsFacts(limite!);
+                                                  Navigator.of(context).pop(false); 
+                                              }
+                                          },
+                                          child: Text(" Generar")
+                                      ) 
+                                  ],
+                                  content: Column( 
+                                       mainAxisSize: MainAxisSize.min,
+                                       children: [
+                                           Text(" Digite el numero de frases", style: style.estiloText1,),
+                                           SizedBox(height: 15.0,),
+                                           Form(
+                                             key: _formkey2,
+                                             child: TextFormField(
+                                                 keyboardType: TextInputType.number,
+                                                 validator: (val){
+                                                     int? lim = int.tryParse(val!);  
+                                           
+                                                     if(lim != null){
+                                                       return null; 
+                                                     }else{
+                                                       return "Ingrese un numero";
+                                                     } 
+                                                      
+                                                 },
+                                                 onSaved: (val) => limite = int.parse(val!),  
+                                             ),
+                                           ),
+                                       ],
+                                  ),
+                              );
+                          }
+                      );   
                   },
                 ),
                 SpeedDialChild(
@@ -116,9 +165,7 @@ class _HomePageState extends State<HomePage> {
                               ActividadModel actividadModel = ActividadModel(titulo: titulo, descripcion: descripcion, activa: 1); 
                               listaProvider.nuevaActividad(actividadModel);
                               Navigator.of(context).pop(false); 
-                          }
-
-                          
+                          }       
                      },
                     child: Text("GUARDAR"), 
                  )

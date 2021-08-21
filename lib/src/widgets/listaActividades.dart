@@ -8,15 +8,11 @@ import 'package:to_do_list/src/styles/styles.dart' as style;
 class ListaActividades extends StatelessWidget { 
 
   final List<ActividadModel> actividades; 
-  
-
-
   const ListaActividades(this.actividades);
 
   @override
   Widget build(BuildContext context) { 
     
-    final listaProvider = Provider.of<ListaProvider>(context);
 
     return ListView.builder(
       itemCount: actividades.length,
@@ -95,20 +91,31 @@ class _Actividad extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.5),
           child: ListTile(
+                
                 enabled: (actividad.activa==1)? true : false,             
-                  title: Text(actividad.titulo, style: style.estiloText1,),
-                  subtitle: Text(actividad.descripcion, style: style.estiloText2,),
-                  trailing: IconButton(
-                    onPressed: (){
-                        (actividad.activa == 1) ? actividad.activa = 0 : actividad.activa = 1; 
-                        listaProvider.editarActividad(actividad);  
-                    },
-                    icon: Icon(Icons.check),
+                  title: Text(
+                        actividad.titulo,
+                        style: (actividad.activa==1)?style.estiloText1: style.estiloText3,
                   ),
-                  onTap: () {
-                  
-                      _editarDescripcion(context);
-
+                  subtitle: Text(actividad.descripcion, style: style.estiloText2,),
+                  trailing: Column(
+                    children: [
+                      IconButton(
+                        tooltip: "Realizado",
+                        iconSize: 40.0,
+                        onPressed: (){
+                            if(actividad.id != null){
+                                  (actividad.activa == 1) ? actividad.activa = 0 : actividad.activa = 1; 
+                                  listaProvider.editarActividad(actividad);
+                            } 
+                              
+                        },
+                        icon: Icon(Icons.check, color: (actividad.activa==1)? Colors.white: Colors.orange,),
+                      ),
+                    ],
+                  ),
+                  onTap: () { 
+                    if(actividad.id != null) _editarDescripcion(context);                
                   } ,
               ),
         ),
@@ -119,7 +126,6 @@ class _Actividad extends StatelessWidget {
   Future<void> _editarDescripcion(BuildContext context) async { 
 
       final listaProvider = Provider.of<ListaProvider>(context, listen: false);
-      String text = actividad.descripcion; 
       
        return  showDialog<void>(
               context: context,

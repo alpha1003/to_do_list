@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list/src/models/reponse_model.dart';
 import 'package:to_do_list/src/models/actividad_model.dart';
 import 'package:to_do_list/src/provider/db_provider.dart'; 

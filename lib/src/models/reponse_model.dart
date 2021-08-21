@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 Response responseFromJson(String str) => Response.fromJson(json.decode(str));

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 
 TextStyle estiloText1 = TextStyle(
-    color: Colors.black, 
-    fontWeight: FontWeight.w500,
+    color: Colors.orange, 
+    fontWeight: FontWeight.bold,
     fontFamily: "alpha",
-    fontSize: 23.0
+    fontSize: 25.0
 );
 
 TextStyle estiloText2 = TextStyle(
@@ -13,10 +13,17 @@ TextStyle estiloText2 = TextStyle(
     fontSize: 20.0,
     color: Colors.black,
 
-); 
+);
+
+TextStyle estiloText3 = TextStyle(
+    fontFamily: "alpha",
+    fontSize: 20.0,
+    color: Colors.white,
+
+);
 
 
-Color colorCuadro = Color.fromRGBO(255, 193, 20, 0.6); 
+Color colorCuadro = Color.fromRGBO(255, 255, 255, 0.6); 
 
 LinearGradient gradiante = LinearGradient( 
                   begin: Alignment.topLeft,

@@ -2,7 +2,6 @@ import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:to_do_list/src/pages/home_page.dart';
-import 'package:to_do_list/src/provider/cats_provider.dart';
 import 'package:to_do_list/src/provider/list_provider.dart';
  
 void main() => runApp(MyApp());
@@ -13,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
           ChangeNotifierProvider(create: (_) => new ListaProvider()),
-          ChangeNotifierProvider(create: (_) => new CatsProvider())
+         
       ],
       child: MaterialApp( 
         debugShowCheckedModeBanner: false,

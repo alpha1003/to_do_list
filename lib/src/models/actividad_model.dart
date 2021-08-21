@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 List<ActividadModel> ActividadModelFromJson(String str) => List<ActividadModel>.from(json.decode(str).map((x) => ActividadModel.fromJson(x)));
