@@ -52,11 +52,8 @@ class DBProvider {
 
     final db = await database;
     
-   
     final res = await db!.insert('actividades', actividad.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
 
-    // Es el ID del último registro insertado;
-    print(res);
     return res;
     
      }
@@ -69,7 +66,19 @@ class DBProvider {
     return res!.isNotEmpty
           ? res.map( (s) => ActividadModel.fromJson(s) ).toList()
           : [];
-  }
+  } 
+
+  Future<List<ActividadModel>> buscarDescripcion(String d) async {
+    d = d + "%";
+    final db  = await database;
+    final res = await db?.query("actividades", where: "descripcion LIKE ?", whereArgs:[d]); 
+
+    return res!.isNotEmpty
+          ? res.map( (s) => ActividadModel.fromJson(s) ).toList()
+          : [];
+  } 
+
+  
 
 
 

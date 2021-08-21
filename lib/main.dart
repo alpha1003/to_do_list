@@ -25,9 +25,7 @@ class MyApp extends StatelessWidget {
            loadingText: Text("Cargando..."),
            navigator: HomePage(),
         ), 
-        theme: ThemeData.dark().copyWith(
-           disabledColor: Colors.red[200],
-        ),
+        
       ),
     );
   } 

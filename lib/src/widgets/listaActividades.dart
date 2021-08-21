@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:to_do_list/src/models/actividad_model.dart';
@@ -82,30 +83,34 @@ class _Actividad extends StatelessWidget {
             } ,
           );
       },
-      onDismissed: (direction) {
-           listaProvider.eliminarActividad(actividad.id!); 
+      onDismissed: (direction) { 
+           if(actividad.id != null) listaProvider.eliminarActividad(actividad.id!);
          },
       child: Card(
-        color: (actividad.activa==1)? Colors.lightGreen : Colors.blueGrey, 
+        
+        shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        color: (actividad.activa==1)? style.colorCuadro : Colors.blueGrey, 
         margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        elevation: 5.0,
-        shape: StadiumBorder(),
-        child: ListTile(
-        enabled: (actividad.activa==1)? true : false,             
-            title: Text(actividad.titulo, style: style.estiloText1,),
-            subtitle: Text(actividad.descripcion, style: style.estiloText2,),
-            trailing: IconButton(
-              onPressed: (){
-                  (actividad.activa == 1) ? actividad.activa = 0 : actividad.activa = 1; 
-                  listaProvider.editarActividad(actividad);  
-              },
-              icon: Icon(Icons.check),
-            ),
-            onTap: () {
+        elevation: 2.0,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.5),
+          child: ListTile(
+                enabled: (actividad.activa==1)? true : false,             
+                  title: Text(actividad.titulo, style: style.estiloText1,),
+                  subtitle: Text(actividad.descripcion, style: style.estiloText2,),
+                  trailing: IconButton(
+                    onPressed: (){
+                        (actividad.activa == 1) ? actividad.activa = 0 : actividad.activa = 1; 
+                        listaProvider.editarActividad(actividad);  
+                    },
+                    icon: Icon(Icons.check),
+                  ),
+                  onTap: () {
+                  
+                      _editarDescripcion(context);
 
-                _editarDescripcion(context);
-
-            } ,
+                  } ,
+              ),
         ),
       ), 
     );
@@ -124,6 +129,7 @@ class _Actividad extends StatelessWidget {
                     child: Column(
                         children: [
                             TextFormField(
+                              
                                 
                                 initialValue: actividad.descripcion,
                                 onChanged: (t){
