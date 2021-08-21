@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 
 TextStyle estiloText1 = TextStyle(
-    color: Colors.green, 
+    color: Colors.black, 
     fontFamily: "alpha",
-    fontSize: 20.0
+    fontSize: 22.0
 );
 
 TextStyle estiloText2 = TextStyle(
     fontFamily: "alpha",
-    fontSize: 15.0
+    fontSize: 18.0
 );

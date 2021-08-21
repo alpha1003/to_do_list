@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
+import 'package:to_do_list/src/models/actividad_model.dart';
 import 'package:to_do_list/src/provider/cats_provider.dart';
 import 'package:to_do_list/src/provider/list_provider.dart';
 import 'package:to_do_list/src/widgets/listaActividades.dart'; 
@@ -18,9 +19,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context)  { 
 
-    final actividades = Provider.of<ListaProvider>(context).listaActividades;
-    final descripciones = Provider.of<ListaProvider>(context).listaDescripcion; 
-
+    final listaActividades = Provider.of<ListaProvider>(context).actividades;
     final listaProvider = Provider.of<ListaProvider>(context);  
     final catsProvider  = Provider.of<CatsProvider>(context);
 
@@ -37,7 +36,7 @@ class _HomePageState extends State<HomePage> {
                  )
               ],
           ),
-          body: ListaActividades(actividades, descripciones),
+          body: ListaActividades(listaActividades),
           floatingActionButton: SpeedDial(
               backgroundColor: Colors.green,
               animatedIcon: AnimatedIcons.menu_close,
@@ -55,9 +54,10 @@ class _HomePageState extends State<HomePage> {
                   
                   label: "Agregar Actividad",
                   onTap: (){
-                      setState(() {
-                      listaProvider.setListaActividades("alpha", "Omega");
-                  });
+                      setState(() { 
+                       ActividadModel actividad = ActividadModel(titulo: "Alpha", descripcion: "descripcion", activa: 1); 
+                      listaProvider.nuevaActividad(actividad); 
+                    });
                   },
                 ),
               ],

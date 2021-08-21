@@ -1,58 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart'; 
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:to_do_list/src/models/actividad_model.dart';
+import 'package:to_do_list/src/provider/db_provider.dart'; 
 
 
 
 class ListaProvider with ChangeNotifier {
 
-
-    List<String> listaActividades = [];
-    List<String> listaDescripcion = []; 
+    List<ActividadModel> actividades = [];
+    
     ListaProvider(){
       this.getlistaActividades(); 
-    }
-
-
-    getlistaActividades() async {
-
-        SharedPreferences prefs = await SharedPreferences.getInstance(); 
-        listaActividades = prefs.getStringList("listaA") ?? [];  
-        listaDescripcion = prefs.getStringList("listaD") ?? [];
-        
-        notifyListeners(); 
     } 
 
-    setListaActividades(String titulo, String descripcion) async {
-       SharedPreferences prefs = await SharedPreferences.getInstance();
-        listaActividades = prefs.getStringList("listaA") ?? [];
-        listaDescripcion = prefs.getStringList("listaD") ?? [];
-        listaActividades.add(titulo);
-        listaDescripcion.add(descripcion); 
-        prefs.setStringList("listaA", listaActividades);
-        prefs.setStringList("listaD", listaDescripcion); 
-        notifyListeners();
+
+    nuevaActividad(ActividadModel actividad) async {
+
+
+        final id = await DBProvider.db.nuevaActividad(actividad);
+        actividad.id = id; 
+        this.actividades.add(actividad); 
+        notifyListeners(); 
+
+    }
+
+    getlistaActividades() async { 
+
+        final actividades = await DBProvider.db.getTodosLosActividades(); 
+        this.actividades = [...actividades]; 
+        notifyListeners(); 
     }  
 
-    editarActividad(String descripcion, int index) async {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        listaDescripcion = prefs.getStringList("listaD") ?? []; 
-        listaDescripcion[index] = descripcion; 
-        prefs.setStringList("listaD", listaDescripcion); 
+    editarActividad(ActividadModel actividad) async {
+        await DBProvider.db.updateActividad(actividad); 
         notifyListeners();
     }
 
     eliminarActividad(int index) async {
-
-        SharedPreferences prefs = await SharedPreferences.getInstance(); 
-        listaActividades = prefs.getStringList("listaA") ?? [];
-        listaDescripcion = prefs.getStringList("listaD") ?? []; 
-        listaActividades.removeAt(index); 
-        listaDescripcion.removeAt(index);
-        prefs.setStringList("listaA", listaActividades);
-        prefs.setStringList("listaD", listaDescripcion); 
-        notifyListeners();
-
-
+       await DBProvider.db.deleteActividad(index);
+       this.getlistaActividades();
+       notifyListeners(); 
     }
 
 

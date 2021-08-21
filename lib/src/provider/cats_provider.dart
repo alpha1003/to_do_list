@@ -19,15 +19,8 @@ class CatsProvider with ChangeNotifier {
     getCatsFacts(int limit) async {
       
         final url = _url + limit.toString(); 
-
         final res = await http.get(Uri.parse(url));  
-
         final response = responseFromJson(res.body); 
-
-        
-
-         
-
 
         notifyListeners();
 

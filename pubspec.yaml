@@ -27,8 +27,10 @@ dependencies:
     sdk: flutter
   flutter_speed_dial: any
   http: ^0.13.3
+  path_provider: ^2.0.2
   provider: ^6.0.0
   shared_preferences: ^2.0.6
+  sqflite: ^2.0.0+3
 
 dev_dependencies:
   flutter_test:
@@ -56,14 +58,13 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-
   fonts:
     - family: alpha
       fonts:
         - asset: fonts/OpenSansCondensed-LightItalic.ttf
     - family: alpha2
       fonts:
-        - asset: fonts/StyleScript-Regular.ttf   
+        - asset: fonts/StyleScript-Regular.ttf
   #fonts:
   #   - family: Schyler
   #     fonts:
