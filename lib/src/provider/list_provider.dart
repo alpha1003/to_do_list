@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:to_do_list/src/models/reponse_model.dart';
 import 'package:to_do_list/src/models/actividad_model.dart';
@@ -21,16 +23,21 @@ class ListaProvider with ChangeNotifier {
     getCatsFacts(int limit) async { 
 
         actividades.clear();
+        
+        try{ 
+            final url = _url + limit.toString(); 
+            final res = await http.get(Uri.parse(url));  
+            final response = responseFromJson(res.body); 
+
+            response.data.forEach((element) { 
+                final act = ActividadModel(titulo: element.length.toString(), descripcion: element.fact, activa: 1);
+                actividades.add(act);
+            });
+
+      } on SocketException catch( e ){
+          print(e.message); 
+      }
       
-        final url = _url + limit.toString(); 
-        final res = await http.get(Uri.parse(url));  
-        final response = responseFromJson(res.body); 
-
-        response.data.forEach((element) { 
-            final act = ActividadModel(titulo: element.length.toString(), descripcion: element.fact, activa: 1);
-            actividades.add(act);
-        });
-
         notifyListeners();
 
     }

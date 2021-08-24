@@ -41,9 +41,10 @@ class _Actividad extends StatelessWidget {
     return Dismissible(
       key: UniqueKey(),
       background: Container(
+          margin: EdgeInsets.symmetric(vertical: 12.0, horizontal: 5.0),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
-              color: Colors.red,
+              color: Colors.redAccent[700],
           ),
           
           child: Row(
@@ -52,14 +53,13 @@ class _Actividad extends StatelessWidget {
               Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                     Text("Eliminar"),
-                     Icon(Icons.delete, size: 30.0,),
+                     Text("Eliminar", style: TextStyle(fontSize: 20.0),),
+                     Icon(Icons.delete, size: 35.0,),
                   ],
               ),
             ],
           ),
         ),
-      direction: DismissDirection.startToEnd,
       confirmDismiss: (direction) async {
           return await showDialog(
               context: context,

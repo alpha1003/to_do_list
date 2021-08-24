@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> {
     final listaProvider = Provider.of<ListaProvider>(context);  
   
     return SafeArea(
+      
       child: Scaffold(
           appBar: AppBar(
               title: Text(" To Do List"),
@@ -41,13 +42,15 @@ class _HomePageState extends State<HomePage> {
               ],
           ),
           body: Stack(
+              clipBehavior: Clip.hardEdge,
               children: [
                   _background(),
                   ListaActividades(listaActividades),
               ],
           ),
           floatingActionButton: SpeedDial(
-              backgroundColor: Colors.blue,
+              activeForegroundColor: Colors.redAccent,
+              backgroundColor: Colors.redAccent,
               animatedIcon: AnimatedIcons.menu_close,
               children: [
                 SpeedDialChild(
@@ -80,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                                         onPressed: (){
                                             Navigator.of(context).pop(false); 
                                         },
-                                        child: Text("Cancelar")
+                                        child: Text("Cancelar", style: style.estiloText2,)
                                     ),
                                     TextButton(
                                         onPressed: (){
@@ -90,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                                                 Navigator.of(context).pop(false); 
                                             }
                                         },
-                                        child: Text(" Generar")
+                                        child: Text(" Generar", style: style.estiloText1,)
                                     ) 
                                 ],
                                 content: Column( 
@@ -101,6 +104,15 @@ class _HomePageState extends State<HomePage> {
                                          Form(
                                            key: _formkey2,
                                            child: TextFormField(
+                                               decoration: InputDecoration(
+                                                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+                                                          focusedBorder: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                                                              borderSide: BorderSide(
+                                                                   color: Colors.red,
+                                                              ),
+                                                          ),
+                                                      ),
                                                keyboardType: TextInputType.number,
                                                validator: (val){
                                                    int? lim = int.tryParse(val!);  
@@ -122,14 +134,11 @@ class _HomePageState extends State<HomePage> {
                     );
   }
 
-
   Widget _background(){
       return Container(
-          width: double.infinity,
+          width: MediaQuery.of(context).size.width,
           height: double.infinity,
-          decoration: BoxDecoration(
-              gradient: style.gradiante,
-          ),
+          child: Image(image: AssetImage("images/1.jpg"),fit: BoxFit.cover,)
       ); 
   }
 
@@ -137,40 +146,44 @@ class _HomePageState extends State<HomePage> {
    final listaProvider = Provider.of<ListaProvider>(context, listen: false);  
 
       return await showDialog(
+      useSafeArea: true, 
       context: context,
       builder: (context) {
         return StatefulBuilder(
           builder: (BuildContext context1, setState) {
-            return AlertDialog(
-              elevation: 5.0,
-              content: Container(
-                  child: SingleChildScrollView(
-                      child: Column(
-                          children: [ 
-                               Text(" Agregar nueva actividad ", style: style.estiloText1,), 
-                               SizedBox(height: 20.0,),
-                               _formActividad()
-                          ],
-                      ),
-                  ),
+            return Container( 
+              child: AlertDialog(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                elevation: 5.0,
+                content: Container(
+                    child: SingleChildScrollView(       
+                        child: Column( 
+                            children: [ 
+                                 Text(" Agregar nueva actividad ", style: style.estiloText1,), 
+                                 SizedBox(height: 20.0,),
+                                 _formActividad()
+                            ],
+                        ),
+                    ),
+                ),
+                actions: [ 
+                    TextButton(
+                       onPressed: () => Navigator.of(context).pop(false),
+                      child: Text("Cancelar", style: style.estiloText1,), 
+                   ), 
+                    TextButton(
+                       onPressed: (){ 
+                            if(_formkey.currentState!.validate()){
+                                _formkey.currentState!.save();
+                                ActividadModel actividadModel = ActividadModel(titulo: titulo, descripcion: descripcion, activa: 1); 
+                                listaProvider.nuevaActividad(actividadModel);
+                                Navigator.of(context).pop(false); 
+                            }       
+                       },
+                      child: Text("Guardar", style: style.estiloText1), 
+                   )
+                ],
               ),
-              actions: [ 
-                  TextButton(
-                     onPressed: () => Navigator.of(context).pop(false),
-                    child: Text("Cancelar"), 
-                 ), 
-                  TextButton(
-                     onPressed: (){ 
-                          if(_formkey.currentState!.validate()){
-                              _formkey.currentState!.save();
-                              ActividadModel actividadModel = ActividadModel(titulo: titulo, descripcion: descripcion, activa: 1); 
-                              listaProvider.nuevaActividad(actividadModel);
-                              Navigator.of(context).pop(false); 
-                          }       
-                     },
-                    child: Text("GUARDAR"), 
-                 )
-              ],
             );
           },
         );
@@ -192,6 +205,12 @@ class _HomePageState extends State<HomePage> {
                       decoration: InputDecoration(
                           hintText: "Titulo de la actividad",
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              borderSide: BorderSide(
+                                   color: Colors.red,
+                              ),
+                          ),
                       ),
                   ),
                   SizedBox(height: 10.0,),
@@ -203,6 +222,12 @@ class _HomePageState extends State<HomePage> {
                       decoration: InputDecoration(
                           hintText: "Descripcion",
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              borderSide: BorderSide(
+                                   color: Colors.red,
+                              ),
+                          ),
                       ),
                   ),
               ],

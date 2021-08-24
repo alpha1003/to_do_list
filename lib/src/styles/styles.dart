@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 
 TextStyle estiloText1 = TextStyle(
-    color: Colors.orange, 
+    color: Colors.orange[500], 
     fontWeight: FontWeight.bold,
     fontFamily: "alpha",
     fontSize: 25.0

@@ -17,6 +17,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp( 
         debugShowCheckedModeBanner: false,
         title: 'Material App',
+        theme: Theme.of(context).copyWith(
+           accentColor: Colors.redAccent,
+           primaryColor: Colors.redAccent[400],
+        ),
         home: EasySplashScreen(
            logo: Image.asset("images/logo.png"),
            logoSize: 150.0, 
